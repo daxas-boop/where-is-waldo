@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './components/header/Header';
+import Header from './components/navbar/NavBar';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import Levels from './components/levels/Levels';
 import Home from './components/home/Home';
