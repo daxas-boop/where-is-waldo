@@ -3,8 +3,10 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import SignedInLinks from './SignedInLinks';
+import SignedOutLinks from './SignedOutLinks';
 import Button from '@material-ui/core/Button';
-import SimpleMenu from './Menu';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,25 +20,37 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       textAlign: 'center',
     },
+    links: {
+      textDecoration: 'none',
+    },
   })
 );
 
-const Header = () => {
+const NavBar = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <SimpleMenu></SimpleMenu>
+          <Link className={classes.links} to="/">
+            <Button>Home</Button>
+          </Link>
+          <Link className={classes.links} to="/levels">
+            <Button>Levels</Button>
+          </Link>
+          <Link className={classes.links} to="/leaderboard">
+            <Button>Leaderboard</Button>
+          </Link>
           <Typography variant="h4" className={classes.title}>
             Where's Waldo
           </Typography>
-          <Button color="inherit">Login</Button>
+          <SignedInLinks></SignedInLinks>
+          <SignedOutLinks></SignedOutLinks>
         </Toolbar>
       </AppBar>
     </div>
   );
 };
 
-export default Header;
+export default NavBar;
