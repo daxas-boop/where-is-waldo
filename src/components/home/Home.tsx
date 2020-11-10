@@ -1,7 +1,8 @@
 import React from 'react';
+import NotSigned from './NotSigned';
 
 const Home = () => {
-  return <div>Home</div>;
+  return <NotSigned></NotSigned>;
 };
 
 export default Home;
