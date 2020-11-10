@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      height: '10vh',
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -30,26 +31,24 @@ const NavBar = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Link className={classes.links} to="/">
-            <Button>Home</Button>
-          </Link>
-          <Link className={classes.links} to="/levels">
-            <Button>Levels</Button>
-          </Link>
-          <Link className={classes.links} to="/leaderboard">
-            <Button>Leaderboard</Button>
-          </Link>
-          <Typography variant="h4" className={classes.title}>
-            Where's Waldo
-          </Typography>
-          <SignedInLinks></SignedInLinks>
-          <SignedOutLinks></SignedOutLinks>
-        </Toolbar>
-      </AppBar>
-    </div>
+    <AppBar position="static">
+      <Toolbar className={classes.root}>
+        <Link className={classes.links} to="/">
+          <Button>Home</Button>
+        </Link>
+        <Link className={classes.links} to="/levels">
+          <Button>Levels</Button>
+        </Link>
+        <Link className={classes.links} to="/leaderboard">
+          <Button>Leaderboard</Button>
+        </Link>
+        <Typography variant="h4" className={classes.title}>
+          Where's Waldo
+        </Typography>
+        <SignedInLinks></SignedInLinks>
+        <SignedOutLinks></SignedOutLinks>
+      </Toolbar>
+    </AppBar>
   );
 };
 
