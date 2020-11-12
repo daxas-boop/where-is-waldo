@@ -1,23 +1,38 @@
 import firebase from '../../config/fbConfig';
 
-export const logIn = (email: string, password: string) => {
-  return async (dispatch: any, getState: any) => {
+export const signIn = (email: string, password: string) => {
+  return async (dispatch: any) => {
     try {
-      firebase.auth().signInWithEmailAndPassword(email, password);
-      dispatch({ type: 'USER_LOGGED_IN' });
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+
+      dispatch({ type: 'LOGIN_SUCCESS' });
     } catch (error) {
-      dispatch({ type: 'USER_LOGGED_IN_ERROR' });
+      dispatch({ type: 'LOGIN_ERROR', payload: error });
     }
   };
 };
 
 export const signUp = (email: string, password: string) => {
-  return async (dispatch: any, getState: any) => {
+  return async (dispatch: any) => {
     try {
-      firebase.auth().createUserWithEmailAndPassword(email, password);
-      dispatch({ type: 'SIGNUP_SUCCESS' });
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      dispatch({ type: 'LOGIN_SUCCESS' });
     } catch (error) {
-      dispatch({ type: 'SIGNUP_ERROR' });
+      dispatch({ type: 'SIGNUP_ERROR', payload: error });
     }
+  };
+};
+
+export const logout = () => {
+  return (dispatch: any) => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        dispatch({ type: 'LOGOUT_SUCCESS' });
+      })
+      .catch((error) => {
+        dispatch({ type: 'LOGOUT_ERROR', payload: error });
+      });
   };
 };
