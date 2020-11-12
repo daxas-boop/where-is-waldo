@@ -7,6 +7,8 @@ import SignedInLinks from './SignedInLinks';
 import SignedOutLinks from './SignedOutLinks';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import { RootState } from '../../store/types';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavBar = () => {
   const classes = useStyles();
+  const state = useSelector((state: RootState) => state);
 
   return (
     <AppBar position="static">
@@ -45,8 +48,7 @@ const NavBar = () => {
         <Typography variant="h4" className={classes.title}>
           Where's Waldo
         </Typography>
-        <SignedInLinks></SignedInLinks>
-        <SignedOutLinks></SignedOutLinks>
+        { state.user ? <SignedInLinks /> : <SignedOutLinks />}
       </Toolbar>
     </AppBar>
   );
