@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import styled from '@emotion/styled';
 import { signUp } from '../../store/actions/loginActions';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store/types';
+import { useHistory } from 'react-router-dom';
 
 const StyledForm = styled.form`
   display: flex;
@@ -18,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       '& > *': {
         margin: theme.spacing(2),
-        width: '25ch',
+        width: '360px',
       },
     },
   })
@@ -28,15 +31,34 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const SignUp = () => {
+const ErrorText = styled.p`
+  text-align: center;
+  color: red;
+`;
+
+const StyledButton = styled(Button)`
+  align-items: center;
+  width: 200px;
+`;
+
+const SignUp = (props: any) => {
+  const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const classes = useStyles();
+  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state);
+  const history = useHistory();
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    signUp(email, password);
+    dispatch(signUp(email, password));
   };
+
+  useEffect(() => {
+    if (state.user) {
+      history.push('/');
+    }
+  }, [history, state.user]);
 
   return (
     <StyledForm
@@ -59,9 +81,10 @@ const SignUp = () => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <Button type="submit" variant="contained" color="primary">
+      <StyledButton type="submit" variant="contained" color="primary">
         Submit
-      </Button>
+      </StyledButton>
+      {state.authError && <ErrorText>{state.authError.message}</ErrorText>}
     </StyledForm>
   );
 };

@@ -1,20 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import firebase from '../../config/fbConfig';
+import { signIn } from '../../store/actions/loginActions';
+import { RootState } from '../../store/types';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       '& > *': {
         margin: theme.spacing(2),
-        width: '25ch',
+        width: '360px',
       },
     },
   })
 );
+
+const StyledButton = styled(Button)`
+  width: 200px;
+`;
 
 const StyledForm = styled.form`
   display: flex;
@@ -28,13 +35,28 @@ const Title = styled.h2`
   text-align: center;
 `;
 
+const ErrorText = styled.p`
+  text-align: center;
+  color: red;
+`;
+
 const SignIn = () => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (state.user) {
+      history.push('/');
+    }
+  }, [history, state.user]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
+    dispatch(signIn(email, password));
   };
 
   return (
@@ -58,9 +80,10 @@ const SignIn = () => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <Button type="submit" variant="contained" color="primary">
+      <StyledButton type="submit" variant="contained" color="primary">
         Submit
-      </Button>
+      </StyledButton>
+      {state.authError && <ErrorText>{state.authError.message}</ErrorText>}
     </StyledForm>
   );
 };
