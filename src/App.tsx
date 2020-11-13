@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './components/navbar/NavBar';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import Levels from './components/levels/Levels';
@@ -8,17 +8,18 @@ import SignUp from './components/navbar/SignUp';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from './config/fbConfig';
 import { useDispatch } from 'react-redux';
+import Loading from './components/loading/Loading';
 
 function App() {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        dispatch({ type: 'USER_UPDATED', payload: user });
-      }
-    });
-  }, [dispatch]);
+  firebase.auth().onAuthStateChanged((user) => {
+    dispatch({ type: 'USER_UPDATED', payload: user });
+    setLoading(false);
+  });
+
+  if (loading) return <Loading />;
 
   return (
     <Router>
