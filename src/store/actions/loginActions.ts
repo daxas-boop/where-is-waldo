@@ -4,7 +4,6 @@ export const signIn = (email: string, password: string) => {
   return async (dispatch: any) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-
       dispatch({ type: 'LOGIN_SUCCESS' });
     } catch (error) {
       dispatch({ type: 'LOGIN_ERROR', payload: error });

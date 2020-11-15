@@ -1,24 +1,20 @@
 import { ILevels } from './types/level-types';
-const level1_img = require('./assets/images/level_1.png');
+import level1_img from './assets/images/level_1.png';
 
 const levelFactory = (
   characters: Array<string>,
-  image: File,
+  image: any,
   name: string
 ): ILevels => {
   const getCharacters = () => characters;
   const getImage = () => image;
   const getName = () => name;
 
-  const isCharacterFound = (coords: Array<number>) => {
-    return true;
-  };
-
-  const characterLeft = () => {};
+  const charactersLeft = () => {};
 
   const isLevelOver = () => {};
 
-  return { getCharacters, getImage, isLevelOver, characterLeft, getName };
+  return { getCharacters, getImage, isLevelOver, charactersLeft, getName };
 };
 
 export const levels: { [key: string]: ILevels } = {

@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/types';
 
 const Leaderboard = () => {
-  const state = useSelector((state: RootState) => state);
+  const authState = useSelector((state: RootState) => state.auth);
 
   return (
     <>
-      {!state.user ? (
+      {!authState.user ? (
         <h1>Must be logged in to see this page.</h1>
       ) : (
         <div>Leaderboard</div>

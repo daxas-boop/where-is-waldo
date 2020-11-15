@@ -1,12 +1,18 @@
 import React from 'react';
-import NotSigned from './NotSigned';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
+import { RootState, LevelState } from '../../store/types';
+import NotSigned from './NotSigned';
 import Game from './Game';
+import Levels from '../levels/Levels';
 
 const Home = () => {
-  const state = useSelector((state: RootState) => state);
-  return state.user ? <Game /> : <NotSigned />;
+  const authState = useSelector((state: RootState) => state.auth);
+  const levelState = useSelector((state: LevelState) => state.level);
+  if (!authState.user) {
+    return <NotSigned />;
+  } else {
+    return levelState.level ? <Game level={levelState.level} /> : <Levels />;
+  }
 };
 
 export default Home;

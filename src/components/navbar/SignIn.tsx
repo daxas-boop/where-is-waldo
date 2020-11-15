@@ -45,14 +45,14 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const state = useSelector((state: RootState) => state);
+  const authState = useSelector((state: RootState) => state.auth);
   const history = useHistory();
 
   useEffect(() => {
-    if (state.user) {
+    if (authState.user) {
       history.push('/');
     }
-  }, [history, state.user]);
+  }, [history, authState.user]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +83,9 @@ const SignIn = () => {
       <StyledButton type="submit" variant="contained" color="primary">
         Submit
       </StyledButton>
-      {state.authError && <ErrorText>{state.authError.message}</ErrorText>}
+      {authState.authError && (
+        <ErrorText>{authState.authError.message}</ErrorText>
+      )}
     </StyledForm>
   );
 };

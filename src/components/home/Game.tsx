@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import CharacterList from './CharacterList';
 import styled from '@emotion/styled';
-import level1 from '../../assets/images/level_1.png';
+import Button from '@material-ui/core/Button';
+import firebase from '../../config/fbConfig';
+import 'firebase/firestore';
 
 const Container = styled.section`
   height: 100vh;
   width: 80vw;
-  margin: 0 auto;
+  margin: 60px auto;
+  overflow: hidden;
   position: relative;
   @media (max-width: 768px) {
     width: 100vw;
@@ -18,55 +20,77 @@ const Image = styled.img`
   height: 100%;
 `;
 
-const Grid = styled.div`
-  width: 100%;
-  height: 100%;
+const SelectorBox = styled.div`
+  width: 100px;
+  height: 100px;
+  border: 2px dashed black;
+  border-radius: 50%;
   position: absolute;
-  display: grid;
-  grid-template-columns: repeat(15, 1fr);
-  grid-template-rows: repeat(15, 1fr);
+  pointer-events: none;
 `;
 
-const Cell = styled.div`
-  position: relative;
-  &:hover {
-    cursor: pointer;
-  }
+const StyledButton = styled(Button)`
+  margin-left: 110px;
 `;
 
-const BorderBox = styled.div`
-  width: 100%;
-  height: 100%;
-  border: 2px solid black;
-`;
+const Game = (props: any) => {
+  const [selectorBoxCoords, setSelectorBoxCoords] = useState<Array<number>>([]);
+  const [showSelectorBox, setShowSelectorBox] = useState(false);
+  const db = firebase.firestore();
 
-const Game = () => {
-  const COORDINATES = Array.apply(null, Array(225));
-  const [renderCharList, setRenderCharList] = useState(
-    new Array(225).fill(false)
-  );
-
-  const handleCellClick = (i: number) => {
-    const newRenderCharList = new Array(225).fill(false);
-    newRenderCharList.splice(i, 1, true);
-    setRenderCharList(newRenderCharList);
+  const handleImageClick = (e: React.MouseEvent<HTMLElement>) => {
+    const coords: Array<number> = [
+      e.nativeEvent.offsetX,
+      e.nativeEvent.offsetY,
+    ];
+    setSelectorBoxCoords(coords);
+    setShowSelectorBox(true);
   };
 
+  const handleCharacterClick = (character: string) => {
+    const docLevel = db.collection('levels').doc(props.level.getName());
+    docLevel.get().then((level: any) => {
+      if (level.exists) {
+        //matchear character
+        //chekear coords
+        console.log(level.data().characters);
+      } else {
+        console.log('No such document!');
+      }
+    });
+    setShowSelectorBox(false);
+  };
+
+  const { level } = props;
   return (
-    <Container>
-      <Grid>
-        {COORDINATES.map((e, i) => (
-          <Cell key={i} onClick={(e) => handleCellClick(i)}>
-            {renderCharList[i] ? (
-              <>
-                <BorderBox />
-                <CharacterList />
-              </>
-            ) : null}
-          </Cell>
-        ))}
-      </Grid>
-      <Image src={level1} alt="image of wheres is waldo" />
+    <Container id="container">
+      <Image
+        src={level.getImage()}
+        onClick={(e) => handleImageClick(e)}
+        alt="image of wheres is waldo"
+      />
+      {showSelectorBox && (
+        <div
+          style={{
+            position: 'absolute',
+            display: 'flex',
+            flexDirection: 'column',
+            left: selectorBoxCoords[0] - 50,
+            top: selectorBoxCoords[1] - 50,
+          }}
+        >
+          <SelectorBox />
+          {level.getCharacters().map((character: string) => (
+            <StyledButton
+              key={character}
+              variant="contained"
+              onClick={() => handleCharacterClick(character)}
+            >
+              {character}
+            </StyledButton>
+          ))}
+        </div>
+      )}
     </Container>
   );
 };

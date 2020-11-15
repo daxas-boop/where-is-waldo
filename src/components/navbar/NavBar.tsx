@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const NavBar = () => {
   const classes = useStyles();
-  const state = useSelector((state: RootState) => state);
+  const authState = useSelector((state: RootState) => state.auth);
 
   return (
     <AppBar position="static">
@@ -48,7 +48,7 @@ const NavBar = () => {
         <Typography variant="h4" className={classes.title}>
           Where's Waldo
         </Typography>
-        { state.user ? <SignedInLinks /> : <SignedOutLinks />}
+        {authState.user ? <SignedInLinks /> : <SignedOutLinks />}
       </Toolbar>
     </AppBar>
   );

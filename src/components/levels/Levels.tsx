@@ -1,16 +1,16 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/types';
+import { levels } from '../../levels';
+import { selectLevel } from '../../store/actions/levelActions';
+import { ILevels } from '../../types/level-types';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
     paper: {
       padding: theme.spacing(2),
       textAlign: 'center',
@@ -21,35 +21,35 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Levels = () => {
   const classes = useStyles();
-  const state = useSelector((state: RootState) => state);
+  const authState = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleLevelClick = (level: ILevels) => {
+    dispatch(selectLevel(level));
+    history.push('/');
+  };
 
   return (
     <>
-      {!state.user ? (
+      {!authState.user ? (
         <h1>Must be logged in to see this page.</h1>
       ) : (
-        <div className={classes.root}>
-          <Grid container spacing={3}>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs</Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs</Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs</Paper>
-            </Grid>
-          </Grid>
-          <Grid container spacing={3}>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs</Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs=6</Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper className={classes.paper}>xs</Paper>
-            </Grid>
+        <div>
+          <Grid container spacing={2}>
+            {Object.keys(levels).map((key) => {
+              return (
+                <Grid
+                  key={key}
+                  onClick={() => handleLevelClick(levels[key])}
+                  item
+                >
+                  <Paper className={classes.paper}>
+                    {levels[key].getName()}
+                  </Paper>
+                </Grid>
+              );
+            })}
           </Grid>
         </div>
       )}
