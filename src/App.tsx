@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/navbar/NavBar';
 import Leaderboard from './components/leaderboard/Leaderboard';
 import Levels from './components/levels/Levels';
@@ -14,9 +14,19 @@ function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
-  firebase.auth().onAuthStateChanged((user) => {
-    dispatch({ type: 'USER_UPDATED', payload: user });
-    setLoading(false);
+  useEffect(() => {
+    let isMounted = true;
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (isMounted) {
+        dispatch({ type: 'USER_UPDATED', payload: user });
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
   });
 
   if (loading) return <Loading />;
