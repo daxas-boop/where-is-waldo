@@ -4,7 +4,7 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { signIn } from '../../store/actions/loginActions';
-import { RootState } from '../../store/types';
+import { RootState } from '../../types/state-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 

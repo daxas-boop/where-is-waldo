@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/types';
+import { RootState } from '../../types/state-types';
 
 const Leaderboard = () => {
   const authState = useSelector((state: RootState) => state.auth);

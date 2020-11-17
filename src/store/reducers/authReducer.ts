@@ -1,4 +1,4 @@
-import { AuthState } from '../types';
+import { AuthState } from '../../types/state-types';
 
 let initState: AuthState = {
   user: null,

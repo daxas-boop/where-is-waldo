@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import styled from '@emotion/styled';
 import { signUp } from '../../store/actions/loginActions';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store/types';
+import { RootState } from '../../types/state-types';
 import { useHistory } from 'react-router-dom';
 
 const StyledForm = styled.form`

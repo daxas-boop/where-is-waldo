@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState, LevelState } from '../../store/types';
+import { RootState, LevelState } from '../../types/state-types';
 import NotSigned from './NotSigned';
 import Game from './Game';
 import Levels from '../levels/Levels';

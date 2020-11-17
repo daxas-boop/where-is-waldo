@@ -7,7 +7,7 @@ import SignedInLinks from './SignedInLinks';
 import SignedOutLinks from './SignedOutLinks';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import { RootState } from '../../store/types';
+import { RootState } from '../../types/state-types';
 import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1,
       textAlign: 'center',
+      ['@media (max-width:488px)']: { fontSize: 0 }, // eslint-disable-line no-useless-computed-key
     },
     links: {
       textDecoration: 'none',

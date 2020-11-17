@@ -1,4 +1,4 @@
-import { LevelState } from '../types';
+import { LevelState } from '../../types/state-types';
 
 const initState: LevelState = {
   level: null,
