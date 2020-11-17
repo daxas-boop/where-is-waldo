@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import Button from '@material-ui/core/Button';
-import firebase from '../../config/fbConfig';
-import 'firebase/firestore';
+import { isCharacterFound } from './helpers/helpers';
+import { CollectionsBookmark } from '@material-ui/icons';
 
 const Container = styled.section`
-  height: 100vh;
-  width: 80vw;
-  margin: 60px auto;
-  overflow: hidden;
+  width: 1024px;
   position: relative;
+  margin: 60px auto;
+  overflow-y: hidden;
+  overflow-x: auto;
+  max-width: 100%;
+
   @media (max-width: 768px) {
-    width: 100vw;
+    width: 720px;
   }
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 1024px;
+  height: 900px;
+
+  @media (max-width: 768px) {
+    width: 720px;
+    height: 425px;
+  }
 `;
 
 const SelectorBox = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border: 2px dashed black;
   border-radius: 50%;
   position: absolute;
@@ -30,34 +37,29 @@ const SelectorBox = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  margin-left: 110px;
+  margin-left: 60px;
+  pointer-events: auto;
 `;
 
 const Game = (props: any) => {
   const [selectorBoxCoords, setSelectorBoxCoords] = useState<Array<number>>([]);
   const [showSelectorBox, setShowSelectorBox] = useState(false);
-  const db = firebase.firestore();
 
   const handleImageClick = (e: React.MouseEvent<HTMLElement>) => {
-    const coords: Array<number> = [
-      e.nativeEvent.offsetX,
-      e.nativeEvent.offsetY,
-    ];
+    const coords = [e.nativeEvent.offsetX, e.nativeEvent.offsetY];
     setSelectorBoxCoords(coords);
     setShowSelectorBox(true);
   };
 
-  const handleCharacterClick = (character: string) => {
-    const docLevel = db.collection('levels').doc(props.level.getName());
-    docLevel.get().then((level: any) => {
-      if (level.exists) {
-        //matchear character
-        //chekear coords
-        console.log(level.data().characters);
-      } else {
-        console.log('No such document!');
-      }
-    });
+  const handleCharacterClick = async (character: string) => {
+    const isFound = await isCharacterFound(
+      character,
+      props.level,
+      selectorBoxCoords
+    );
+    // show loading response
+    // encircle the character if found // save matching characters
+    // show error if missed
     setShowSelectorBox(false);
   };
 
@@ -75,8 +77,9 @@ const Game = (props: any) => {
             position: 'absolute',
             display: 'flex',
             flexDirection: 'column',
-            left: selectorBoxCoords[0] - 50,
-            top: selectorBoxCoords[1] - 50,
+            left: selectorBoxCoords[0] - 25,
+            top: selectorBoxCoords[1] - 25,
+            pointerEvents: 'none',
           }}
         >
           <SelectorBox />
