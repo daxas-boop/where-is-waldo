@@ -3,9 +3,10 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import HomeIcon from '@material-ui/icons/Home';
 import SignedInLinks from './SignedInLinks';
 import SignedOutLinks from './SignedOutLinks';
-import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../types/state-types';
 import { useSelector } from 'react-redux';
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1,
       textAlign: 'center',
-      ['@media (max-width:488px)']: { fontSize: 0 }, // eslint-disable-line no-useless-computed-key
+      ['@media (max-width:488px)']: { display: 'none' }, // eslint-disable-line no-useless-computed-key
     },
     links: {
       textDecoration: 'none',
@@ -38,7 +39,7 @@ const NavBar = () => {
     <AppBar position="static">
       <Toolbar className={classes.root}>
         <Link className={classes.links} to="/">
-          <Button>Home</Button>
+          <HomeIcon />
         </Link>
         <Link className={classes.links} to="/levels">
           <Button>Levels</Button>

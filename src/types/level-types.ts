@@ -1,7 +1,6 @@
 export interface ILevels {
-  getCharacters: () => string[];
-  getImage: () => File;
-  isLevelOver: () => void;
-  charactersLeft: () => void;
-  getName: () => string;
+  charactersNotFound: Array<string>;
+  image: any;
+  name: string;
+  charactersFound: Array<string>;
 }

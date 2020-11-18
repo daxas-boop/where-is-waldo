@@ -44,9 +44,7 @@ const Levels = () => {
                   onClick={() => handleLevelClick(levels[key])}
                   item
                 >
-                  <Paper className={classes.paper}>
-                    {levels[key].getName()}
-                  </Paper>
+                  <Paper className={classes.paper}>{levels[key].name}</Paper>
                 </Grid>
               );
             })}

@@ -1,22 +1,21 @@
 import { ILevels } from './types/level-types';
 import level1_img from './assets/images/level_1.png';
 
-const levelFactory = (
-  characters: Array<string>,
-  image: any,
-  name: string
-): ILevels => {
-  const getCharacters = () => characters;
-  const getImage = () => image;
-  const getName = () => name;
+class Level {
+  charactersNotFound: string[];
+  image: any;
+  name: string;
+  charactersFound: string[];
+  constructor(characters: Array<string>, image: any, name: string) {
+    this.charactersNotFound = characters;
+    this.image = image;
+    this.name = name;
+    this.charactersFound = [];
+  }
+}
 
-  const charactersLeft = () => {};
-
-  const isLevelOver = () => {};
-
-  return { getCharacters, getImage, isLevelOver, charactersLeft, getName };
-};
+const level_1 = new Level(['waldo', 'falling woman'], level1_img, 'Level 1');
 
 export const levels: { [key: string]: ILevels } = {
-  level_1: levelFactory(['waldo'], level1_img, 'Level 1'),
+  level_1,
 };
