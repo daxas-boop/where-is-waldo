@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       ['@media (max-width:488px)']: { display: 'none' }, // eslint-disable-line no-useless-computed-key
     },
     links: {
+      margin: 5,
       textDecoration: 'none',
     },
   })
