@@ -1,20 +1,20 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../types/state-types';
 import { levels } from '../../levels';
 import { selectLevel } from '../../store/actions/levelActions';
 import { ILevels } from '../../types/level-types';
 import { useHistory } from 'react-router';
+import Cards from './Cards';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
+    container: {
+      margin: '30px auto',
     },
   })
 );
@@ -33,9 +33,14 @@ const Levels = () => {
   return (
     <>
       {!authState.user ? (
-        <h1>Must be logged in to see this page.</h1>
+        <Typography variant="h2" align="center">
+          Must be logged in to see this page.
+        </Typography>
       ) : (
-        <div>
+        <Container className={classes.container}>
+          <Typography variant="h2" align="center">
+            Select a level
+          </Typography>
           <Grid container spacing={2}>
             {Object.keys(levels).map((key) => {
               return (
@@ -44,12 +49,12 @@ const Levels = () => {
                   onClick={() => handleLevelClick(levels[key])}
                   item
                 >
-                  <Paper className={classes.paper}>{levels[key].name}</Paper>
+                  <Cards level={levels[key]} />
                 </Grid>
               );
             })}
           </Grid>
-        </div>
+        </Container>
       )}
     </>
   );
