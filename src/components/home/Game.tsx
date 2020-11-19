@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Button from '@material-ui/core/Button';
 import { keyframes } from '@emotion/core';
 import { isCharacterFound } from './helpers/helpers';
-import levelReducer from '../../store/reducers/levelReducer';
+import { Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const Container = styled.section`
   width: 1024px;
@@ -57,12 +58,32 @@ const LoadingSelector = styled.div`
   animation: ${spin} 2s linear infinite;
 `;
 
+const Wrapper = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+`;
+
 const Game = (props: any) => {
+  const { level } = props;
   const [selectorBoxCoords, setSelectorBoxCoords] = useState<Array<number>>([]);
   const [showSelectorBox, setShowSelectorBox] = useState(false);
   const [loading, setLoading] = useState(false);
   const [finishedLevel, setFinishedLevel] = useState(false);
-  const { level } = props;
+  const [charactersFound, setCharactersFound] = useState<Array<string>>([]);
+  const [charactersNotFound, setCharactersNotFound] = useState<Array<string>>(
+    level.characters
+  );
+
+  useEffect(() => {
+    setFinishedLevel(charactersNotFound.length === 0);
+  }, [charactersNotFound]);
+
+  const restartLevel = () => {
+    setCharactersFound([]);
+    setCharactersNotFound(level.characters);
+  };
 
   const handleImageClick = (e: React.MouseEvent<HTMLElement>) => {
     const coords = [e.nativeEvent.offsetX, e.nativeEvent.offsetY];
@@ -80,55 +101,80 @@ const Game = (props: any) => {
     setLoading(false);
 
     if (isFound) {
-      const newNotFoundCharacters = level.charactersNotFound.filter(
+      const newNotFoundCharacters = charactersNotFound.filter(
         (char: string) => char !== character
       );
-      level.charactersNotFound = newNotFoundCharacters;
-      level.charactersFound.push(character);
-      level.charactersNotFound.length === 0 && setFinishedLevel(true);
+      setCharactersNotFound(newNotFoundCharacters);
+      setCharactersFound([...charactersFound, character]);
     }
   };
 
-  return (
-    <Container id="container">
-      {finishedLevel && <h1>YOU WIN</h1>}
-      <Image
-        src={level.image}
-        onClick={(e) => handleImageClick(e)}
-        alt="image of wheres is waldo"
-      />
-      {loading && (
-        <LoadingSelector
-          style={{
-            left: selectorBoxCoords[0] - 25,
-            top: selectorBoxCoords[1] - 25,
+  if (finishedLevel)
+    return (
+      <>
+        <Typography color="primary" variant="h2" align="center">
+          {`You beat ${level.name}`}
+        </Typography>
+        <Typography color="primary" variant="h3" align="center">
+          Your time was:
+        </Typography>
+        <Link to="/levels">
+          <Button variant="contained">Select a new Level</Button>
+        </Link>
+        <Button
+          onClick={() => {
+            restartLevel();
           }}
-        />
-      )}
-      {showSelectorBox && (
-        <div
-          style={{
-            position: 'absolute',
-            display: 'flex',
-            flexDirection: 'column',
-            left: selectorBoxCoords[0] - 25,
-            top: selectorBoxCoords[1] - 25,
-            pointerEvents: 'none',
-          }}
+          variant="contained"
         >
-          <SelectorBox />
-          {level.charactersNotFound.map((character: string) => (
-            <StyledButton
-              key={character}
-              variant="contained"
-              onClick={() => handleCharacterClick(character, selectorBoxCoords)}
-            >
-              {character}
-            </StyledButton>
-          ))}
-        </div>
-      )}
-    </Container>
+          Play again?
+        </Button>
+      </>
+    );
+
+  return (
+    <>
+      <Typography variant="h3" align="center">
+        {level.name}
+      </Typography>
+      <Container>
+        <Image
+          src={level.image}
+          onClick={(e) => handleImageClick(e)}
+          alt={`Image of ${level.name}`}
+        />
+        {showSelectorBox && (
+          <Wrapper
+            style={{
+              left: selectorBoxCoords[0] - 25,
+              top: selectorBoxCoords[1] - 25,
+            }}
+          >
+            <SelectorBox />
+            {charactersNotFound.map((character: string) => (
+              <StyledButton
+                key={character}
+                variant="contained"
+                onClick={() =>
+                  handleCharacterClick(character, selectorBoxCoords)
+                }
+              >
+                {character}
+              </StyledButton>
+            ))}
+          </Wrapper>
+        )}
+
+        {loading && (
+          <LoadingSelector
+            style={{
+              left: selectorBoxCoords[0] - 25,
+              top: selectorBoxCoords[1] - 25,
+            }}
+          />
+        )}
+      </Container>
+    </>
   );
 };
 
