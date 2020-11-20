@@ -1,22 +1,28 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import styled from '@emotion/styled';
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-`;
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    // eslint-disable-next-line no-useless-computed-key
+    ['@media (max-width:768px)']: { flexGrow: 1, justifyContent: 'flex-end' },
+  },
+});
 
 const SignedOutLinks = () => {
+  const classes = useStyles();
+
   return (
-    <>
-      <StyledLink to="/signup">
+    <div className={classes.root}>
+      <Link style={{ textDecoration: 'none' }} to="/signup">
         <Button>Sign up</Button>
-      </StyledLink>
-      <StyledLink to="/signin">
+      </Link>
+      <Link style={{ textDecoration: 'none' }} to="/signin">
         <Button>Sign in</Button>
-      </StyledLink>
-    </>
+      </Link>
+    </div>
   );
 };
 

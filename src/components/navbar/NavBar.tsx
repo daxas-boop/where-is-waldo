@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1,
       textAlign: 'center',
-      ['@media (max-width:488px)']: { display: 'none' }, // eslint-disable-line no-useless-computed-key
+      ['@media (max-width:768px)']: { display: 'none' }, // eslint-disable-line no-useless-computed-key
     },
     links: {
       margin: 5,
@@ -48,7 +48,7 @@ const NavBar = () => {
         <Link className={classes.links} to="/leaderboard">
           <Button>Leaderboard</Button>
         </Link>
-        <Typography variant="h4" className={classes.title}>
+        <Typography variant="h3" className={classes.title}>
           Where's Waldo
         </Typography>
         {authState.user ? <SignedInLinks /> : <SignedOutLinks />}
