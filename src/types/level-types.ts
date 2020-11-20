@@ -1,5 +1,5 @@
 export interface ILevels {
-  image: any;
+  image: string;
   name: string;
   characters: Array<string>;
 }

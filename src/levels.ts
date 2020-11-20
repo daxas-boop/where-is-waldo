@@ -2,10 +2,10 @@ import { ILevels } from './types/level-types';
 import level1_img from './assets/images/level_1.png';
 
 class Level {
-  image: any;
+  image: string;
   name: string;
   characters: string[];
-  constructor(characters: Array<string>, image: any, name: string) {
+  constructor(characters: Array<string>, image: string, name: string) {
     this.name = name;
     this.image = image;
     this.characters = characters;
