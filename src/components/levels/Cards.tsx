@@ -9,7 +9,7 @@ import { ILevels } from '../../types/level-types';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 400,
   },
   media: {
     height: 300,

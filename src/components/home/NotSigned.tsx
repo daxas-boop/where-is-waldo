@@ -1,43 +1,37 @@
 import React from 'react';
-import styled from '@emotion/styled';
 import SignUp from '../navbar/SignUp';
 import { Link } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: Roboto;
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  margin: 0;
-  padding: 0;
-  align-self: center;
-`;
-
-const Text = styled.h2`
-  text-align: center;
-  margin-top: 50px;
-  margin-right: 10px;
-`;
-
-const Container = styled.div`
-  display: flex;
-`;
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      fontFamily: 'Roboto',
+      color: 'white',
+      '& > * + *': {
+        marginLeft: theme.spacing(2),
+      },
+    },
+    text: {
+      marginTop: '20px',
+    },
+  })
+);
 
 const NotSigned = () => {
+  const classes = useStyles();
+
   return (
-    <Wrapper>
+    <Container className={classes.root}>
       <SignUp />
-      <Container>
-        <Text>Already have an account?</Text>
-        <StyledLink to="/signin">
-          <Text>Sign in</Text>
-        </StyledLink>
-      </Container>
-    </Wrapper>
+      <Typography className={classes.text} align="center" variant="h5">
+        Already have an account? <Link to="/signin">Sign In</Link>
+      </Typography>
+    </Container>
   );
 };
 

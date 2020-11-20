@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       margin: '30px auto',
     },
+    text: {
+      marginTop: '20px',
+      color: 'white',
+    },
   })
 );
 
@@ -30,33 +34,28 @@ const Levels = () => {
     history.push('/');
   };
 
+  if (!authState.user)
+    return (
+      <Typography className={classes.text} variant="h2" align="center">
+        Must be logged in to see this page.
+      </Typography>
+    );
+
   return (
-    <>
-      {!authState.user ? (
-        <Typography variant="h2" align="center">
-          Must be logged in to see this page.
-        </Typography>
-      ) : (
-        <Container className={classes.container}>
-          <Typography variant="h2" align="center">
-            Select a level
-          </Typography>
-          <Grid container spacing={2}>
-            {Object.keys(levels).map((key) => {
-              return (
-                <Grid
-                  key={key}
-                  onClick={() => handleLevelClick(levels[key])}
-                  item
-                >
-                  <Cards level={levels[key]} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Container>
-      )}
-    </>
+    <Container className={classes.container}>
+      <Typography variant="h2" align="center">
+        Select a level
+      </Typography>
+      <Grid container spacing={2}>
+        {Object.keys(levels).map((key) => {
+          return (
+            <Grid key={key} onClick={() => handleLevelClick(levels[key])} item>
+              <Cards level={levels[key]} />
+            </Grid>
+          );
+        })}
+      </Grid>
+    </Container>
   );
 };
 
