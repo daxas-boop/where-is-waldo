@@ -2,31 +2,27 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Button from '@material-ui/core/Button';
 import { keyframes } from '@emotion/core';
-import { isCharacterFound } from './helpers/helpers';
+import { isCharacterFound } from './helpers/helper-functions';
 import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import {
+  startTimer,
+  endTimer,
+  getTimeDifferential,
+} from './helpers/time-helpers';
 
 const Container = styled.section`
-  width: 1024px;
+  width: 1280px;
   position: relative;
   margin: 60px auto;
   overflow-y: hidden;
   overflow-x: auto;
-  max-width: 100%;
-
-  @media (max-width: 768px) {
-    width: 720px;
-  }
+  max-width: 95%;
 `;
 
 const Image = styled.img`
-  width: 1024px;
-  height: 900px;
-
-  @media (max-width: 768px) {
-    width: 720px;
-    height: 425px;
-  }
+  width: 1280px;
+  height: 720px;
 `;
 
 const SelectorBox = styled.div`
@@ -48,7 +44,11 @@ const spin = keyframes`
   100% { transform: rotate(360deg); }
 `;
 
-const LoadingSelector = styled.div`
+type CoordsProps = {
+  coords: Array<number>;
+};
+
+const LoadingSelector = styled.div<CoordsProps>`
   position: absolute;
   border: 10px solid #f3f3f3;
   border-top: 10px solid #3498db;
@@ -56,13 +56,43 @@ const LoadingSelector = styled.div`
   width: 40px;
   height: 40px;
   animation: ${spin} 2s linear infinite;
+  left: ${(props) => (props.coords[0] - 25).toString() + 'px'};
+  top: ${(props) => (props.coords[1] - 25).toString() + 'px'};
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<CoordsProps>`
   position: absolute;
   display: flex;
   flex-direction: column;
   pointer-events: none;
+  left: ${(props) => (props.coords[0] - 25).toString() + 'px'};
+  top: ${(props) => (props.coords[1] - 25).toString() + 'px'};
+`;
+
+const FoundCircle = styled.div<CoordsProps>`
+  position: absolute;
+  left: ${(props) => (props.coords[0] - 25).toString() + 'px'};
+  top: ${(props) => (props.coords[1] - 25).toString() + 'px'};
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid darkgreen;
+`;
+
+const CenterButtons = styled.div`
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  margin-top: 20px;
+`;
+
+const FinishedLevelContainer = styled.div`
+  margin-top: 50px;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  margin-right: 20px;
 `;
 
 const Game = (props: any) => {
@@ -71,12 +101,19 @@ const Game = (props: any) => {
   const [showSelectorBox, setShowSelectorBox] = useState(false);
   const [loading, setLoading] = useState(false);
   const [finishedLevel, setFinishedLevel] = useState(false);
-  const [charactersFound, setCharactersFound] = useState<Array<string>>([]);
+  const [charactersFound, setCharactersFound] = useState<any>([]);
   const [charactersNotFound, setCharactersNotFound] = useState<Array<string>>(
     level.characters
   );
 
   useEffect(() => {
+    startTimer();
+  }, [finishedLevel]);
+
+  useEffect(() => {
+    if (charactersNotFound.length === 0) {
+      endTimer();
+    }
     setFinishedLevel(charactersNotFound.length === 0);
   }, [charactersNotFound]);
 
@@ -105,31 +142,33 @@ const Game = (props: any) => {
         (char: string) => char !== character
       );
       setCharactersNotFound(newNotFoundCharacters);
-      setCharactersFound([...charactersFound, character]);
+      setCharactersFound([...charactersFound, { character, coordinates }]);
     }
   };
 
   if (finishedLevel)
     return (
-      <>
-        <Typography color="primary" variant="h2" align="center">
+      <FinishedLevelContainer>
+        <Typography
+          gutterBottom
+          color="textSecondary"
+          variant="h1"
+          align="center"
+        >
           {`You beat ${level.name}`}
         </Typography>
-        <Typography color="primary" variant="h3" align="center">
-          Your time was:
+        <Typography gutterBottom color="primary" variant="h3" align="center">
+          Your time was {getTimeDifferential()}
         </Typography>
-        <Link to="/levels">
-          <Button variant="contained">Select a new Level</Button>
-        </Link>
-        <Button
-          onClick={() => {
-            restartLevel();
-          }}
-          variant="contained"
-        >
-          Play again?
-        </Button>
-      </>
+        <CenterButtons>
+          <StyledLink to="/levels">
+            <Button variant="contained">Select a new Level</Button>
+          </StyledLink>
+          <Button onClick={() => restartLevel()} variant="contained">
+            Play again?
+          </Button>
+        </CenterButtons>
+      </FinishedLevelContainer>
     );
 
   return (
@@ -143,13 +182,18 @@ const Game = (props: any) => {
           onClick={(e) => handleImageClick(e)}
           alt={`Image of ${level.name}`}
         />
+
+        {charactersFound.map(
+          (character: { character: string; coordinates: Array<number> }) => (
+            <FoundCircle
+              key={character.character}
+              coords={character.coordinates}
+            ></FoundCircle>
+          )
+        )}
+
         {showSelectorBox && (
-          <Wrapper
-            style={{
-              left: selectorBoxCoords[0] - 25,
-              top: selectorBoxCoords[1] - 25,
-            }}
-          >
+          <Wrapper coords={selectorBoxCoords}>
             <SelectorBox />
             {charactersNotFound.map((character: string) => (
               <StyledButton
@@ -165,14 +209,7 @@ const Game = (props: any) => {
           </Wrapper>
         )}
 
-        {loading && (
-          <LoadingSelector
-            style={{
-              left: selectorBoxCoords[0] - 25,
-              top: selectorBoxCoords[1] - 25,
-            }}
-          />
-        )}
+        {loading && <LoadingSelector coords={selectorBoxCoords} />}
       </Container>
     </>
   );
