@@ -1,4 +1,6 @@
 import firebase from '../../config/fbConfig';
+import 'firebase/firestore';
+const db = firebase.firestore();
 
 export const signIn = (email: string, password: string) => {
   return async (dispatch: any) => {
@@ -11,10 +13,14 @@ export const signIn = (email: string, password: string) => {
   };
 };
 
-export const signUp = (email: string, password: string) => {
+export const signUp = (email: string, password: string, name: string) => {
   return async (dispatch: any) => {
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
+      await db.collection('users').doc(email).set({
+        name,
+        email,
+      });
       dispatch({ type: 'LOGIN_SUCCESS' });
     } catch (error) {
       dispatch({ type: 'SIGNUP_ERROR', payload: error });
