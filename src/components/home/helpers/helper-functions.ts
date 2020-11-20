@@ -8,7 +8,6 @@ export const isCharacterFound = async (
   selectedCoords: Array<number>
 ) => {
   const db = firebase.firestore();
-  console.log(level);
   const docLevel = db.collection('levels').doc(level.name);
   const selectedCoordX = selectedCoords[0];
   const selectedCoordY = selectedCoords[1];
@@ -17,10 +16,7 @@ export const isCharacterFound = async (
 
   await docLevel.get().then((levelData: any) => {
     if (levelData.exists) {
-      const characterCoords =
-        window.innerWidth <= 768
-          ? levelData.data().characters[character].mobile
-          : levelData.data().characters[character].desktop;
+      const characterCoords = levelData.data().characters[character];
       isFound =
         selectedCoordX >= characterCoords.coords_x[0] &&
         selectedCoordX <= characterCoords.coords_x[1] &&
