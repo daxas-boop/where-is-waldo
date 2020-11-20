@@ -20,8 +20,6 @@ const SignedInLinks = () => {
     dispatch(logoutAction());
   };
 
-  const state = useSelector((state) => state);
-
   return (
     <Container>
       <Avatar>H</Avatar>
