@@ -41,6 +41,10 @@ const rootReducer = (
       console.log('user updated');
       return { ...state, user: action.payload };
 
+    case 'CLEANUP_LOGIN_ERROR':
+      console.log('clean up login error');
+      return { ...state, authError: null };
+
     default:
       return { ...state };
   }
