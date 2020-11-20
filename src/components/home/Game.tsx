@@ -100,21 +100,23 @@ const Game = (props: any) => {
   const [selectorBoxCoords, setSelectorBoxCoords] = useState<Array<number>>([]);
   const [showSelectorBox, setShowSelectorBox] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [finishedLevel, setFinishedLevel] = useState(false);
+  const [isLevelOver, setIsLevelOver] = useState(false);
   const [charactersFound, setCharactersFound] = useState<any>([]);
   const [charactersNotFound, setCharactersNotFound] = useState<Array<string>>(
     level.characters
   );
 
   useEffect(() => {
-    startTimer();
-  }, [finishedLevel]);
+    if (!isLevelOver) {
+      startTimer();
+    }
+  }, [isLevelOver]);
 
   useEffect(() => {
     if (charactersNotFound.length === 0) {
       endTimer();
     }
-    setFinishedLevel(charactersNotFound.length === 0);
+    setIsLevelOver(charactersNotFound.length === 0);
   }, [charactersNotFound]);
 
   const restartLevel = () => {
@@ -146,7 +148,7 @@ const Game = (props: any) => {
     }
   };
 
-  if (finishedLevel)
+  if (isLevelOver)
     return (
       <FinishedLevelContainer>
         <Typography
