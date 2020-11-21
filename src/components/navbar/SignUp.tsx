@@ -38,7 +38,7 @@ const SignUp = (props: any) => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const dispatch = useDispatch();
   const authState = useSelector((state: RootState) => state.auth);
 
@@ -48,7 +48,7 @@ const SignUp = (props: any) => {
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(signUp(email, password, name));
+    dispatch(signUp(email, password, username));
   };
 
   if (authState.user) return <Redirect to="/" />;
@@ -65,10 +65,9 @@ const SignUp = (props: any) => {
 
       <Input
         style={{ color: 'white' }}
-        id="name"
-        placeholder="Name"
-        type="name"
-        onChange={(e) => setName(e.target.value)}
+        id="username"
+        placeholder="Username"
+        onChange={(e) => setUsername(e.target.value)}
         required
       />
       <Input

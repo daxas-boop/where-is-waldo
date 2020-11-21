@@ -33,3 +33,24 @@ export const isCharacterFound = async (
 
   return isFound;
 };
+
+export const saveTimeInLeaderboard = async (time: string, level: ILevels) => {
+  const db = firebase.firestore();
+  const userUid = firebase.auth().currentUser!.uid;
+  const docRef = db.collection('users').doc(userUid);
+
+  const doc = await docRef.get();
+  try {
+    if (doc.exists) {
+      const userName = doc.data()!.username;
+      db.collection('leadeboard').doc(level.name).set({
+        userName,
+        time,
+      });
+    } else {
+      console.log('No such document');
+    }
+  } catch (error) {
+    console.log('Error getting document:', error);
+  }
+};

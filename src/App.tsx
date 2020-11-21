@@ -17,9 +17,16 @@ function App() {
   useEffect(() => {
     let isMounted = true;
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (isMounted) {
-        dispatch({ type: 'USER_UPDATED', payload: user });
+        if (user) {
+          const db = firebase.firestore();
+          const userRef = await db.collection('users').doc(user.uid).get();
+          const userData = userRef.data();
+          dispatch({ type: 'USER_UPDATED', payload: userData });
+        } else {
+          dispatch({ type: 'USER_UPDATED', payload: null });
+        }
         setLoading(false);
       }
     });

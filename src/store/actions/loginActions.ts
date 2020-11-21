@@ -13,12 +13,20 @@ export const signIn = (email: string, password: string) => {
   };
 };
 
-export const signUp = (email: string, password: string, name: string) => {
+export const signUp = (email: string, password: string, username: string) => {
   return async (dispatch: any) => {
     try {
+      const querySnapshot = await db.collection('usernames').get();
+      querySnapshot.forEach((doc) => {
+        if (doc.id === username) {
+          throw new Error('Username already taken.');
+        }
+      });
       await firebase.auth().createUserWithEmailAndPassword(email, password);
-      await db.collection('users').doc(email).set({
-        name,
+      const user = firebase.auth().currentUser;
+      db.collection('usernames').doc(username).set({ uid: user!.uid });
+      db.collection('users').doc(user!.uid).set({
+        username,
         email,
       });
       dispatch({ type: 'LOGIN_SUCCESS' });

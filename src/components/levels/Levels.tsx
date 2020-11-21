@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     text: {
       marginTop: '20px',
+      marginBottom: '20px',
       color: 'white',
     },
   })
@@ -43,7 +44,7 @@ const Levels = () => {
 
   return (
     <Container className={classes.container}>
-      <Typography variant="h2" align="center">
+      <Typography className={classes.text} variant="h2" align="center">
         Select a level
       </Typography>
       <Grid container spacing={2}>

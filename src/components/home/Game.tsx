@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Button from '@material-ui/core/Button';
 import { keyframes } from '@emotion/core';
-import { isCharacterFound } from './helpers/helper-functions';
 import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import {
+  isCharacterFound,
+  saveTimeInLeaderboard,
+} from './helpers/helper-functions';
 import {
   startTimer,
   endTimer,
@@ -115,9 +118,10 @@ const Game = (props: any) => {
   useEffect(() => {
     if (charactersNotFound.length === 0) {
       endTimer();
+      saveTimeInLeaderboard(getTimeDifferential(), level);
     }
     setIsLevelOver(charactersNotFound.length === 0);
-  }, [charactersNotFound]);
+  }, [charactersNotFound, level]);
 
   const restartLevel = () => {
     setCharactersFound([]);
@@ -151,12 +155,7 @@ const Game = (props: any) => {
   if (isLevelOver)
     return (
       <FinishedLevelContainer>
-        <Typography
-          gutterBottom
-          color="textSecondary"
-          variant="h1"
-          align="center"
-        >
+        <Typography gutterBottom variant="h1" align="center">
           {`You beat ${level.name}`}
         </Typography>
         <Typography gutterBottom color="primary" variant="h3" align="center">
