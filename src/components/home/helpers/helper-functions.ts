@@ -11,24 +11,22 @@ export const isCharacterFound = async (
   const docLevel = db.collection('levels').doc(level.name);
   const selectedCoordX = selectedCoords[0];
   const selectedCoordY = selectedCoords[1];
-  let error: string = '';
   let isFound: boolean = false;
 
-  await docLevel.get().then((levelData: any) => {
+  try {
+    const levelData = await docLevel.get();
     if (levelData.exists) {
-      const characterCoords = levelData.data().characters[character];
+      const characterCoords = levelData.data()!.characters[character];
       isFound =
         selectedCoordX >= characterCoords.coords_x[0] &&
         selectedCoordX <= characterCoords.coords_x[1] &&
         selectedCoordY >= characterCoords.coords_y[0] &&
         selectedCoordY <= characterCoords.coords_y[1];
     } else {
-      error = 'Document not found';
+      throw new Error('Document not found');
     }
-  });
-
-  if (error) {
-    return error;
+  } catch (error) {
+    console.log('Something went wrong', error);
   }
 
   return isFound;
@@ -48,7 +46,7 @@ export const saveTimeInLeaderboard = async (time: string, level: ILevels) => {
   try {
     if (doc.exists) {
       const userName = doc.data()!.username;
-      const levelRef = db.collection('leadeboard').doc(level.name);
+      const levelRef = db.collection('leaderboards').doc(level.name);
       const topTenPromise = await levelRef.get();
       const topTen = topTenPromise.data()!.top_10;
       const myComparator = (a: LeaderboardTimes, b: LeaderboardTimes) =>
@@ -71,7 +69,7 @@ export const saveTimeInLeaderboard = async (time: string, level: ILevels) => {
         });
       }
     } else {
-      console.log('No such document');
+      throw new Error('No such document');
     }
   } catch (error) {
     console.log('Error getting document:', error);
