@@ -1,5 +1,8 @@
 export interface AuthState {
-  user: any;
+  user: {
+    username: string;
+    email: string;
+  } | null;
   authError: {
     message: string;
     code: number;

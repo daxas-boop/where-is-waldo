@@ -34,6 +34,11 @@ export const isCharacterFound = async (
   return isFound;
 };
 
+type LeaderboardTimes = {
+  time: string;
+  userName: string;
+};
+
 export const saveTimeInLeaderboard = async (time: string, level: ILevels) => {
   const db = firebase.firestore();
   const userUid = firebase.auth().currentUser!.uid;
@@ -43,14 +48,37 @@ export const saveTimeInLeaderboard = async (time: string, level: ILevels) => {
   try {
     if (doc.exists) {
       const userName = doc.data()!.username;
-      db.collection('leadeboard').doc(level.name).set({
-        userName,
-        time,
-      });
+      const levelRef = db.collection('leadeboard').doc(level.name);
+      const topTenPromise = await levelRef.get();
+      const topTen = topTenPromise.data()!.top_10;
+      const myComparator = (a: LeaderboardTimes, b: LeaderboardTimes) =>
+        a.time.localeCompare(b.time);
+      const orderedTopTen = topTen.sort(myComparator);
+      if (isTopTen(orderedTopTen, time)) {
+        if (orderedTopTen.length === 10) {
+          levelRef.update({
+            top_10: firebase.firestore.FieldValue.arrayRemove(
+              orderedTopTen[orderedTopTen.length - 1]
+            ),
+          });
+        }
+        levelRef.update({
+          top_10: firebase.firestore.FieldValue.arrayUnion({
+            userName,
+            time,
+            timeStamp: new Date(),
+          }),
+        });
+      }
     } else {
       console.log('No such document');
     }
   } catch (error) {
     console.log('Error getting document:', error);
   }
+};
+
+const isTopTen = (topTen: Array<LeaderboardTimes>, userTime: string) => {
+  if (topTen.length < 10) return true;
+  return topTen[topTen.length - 1].time.localeCompare(userTime) === 1;
 };

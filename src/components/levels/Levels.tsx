@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../types/state-types';
-import { levels } from '../../levels';
+import { levels } from '../../levels/levels';
 import { selectLevel } from '../../store/actions/levelActions';
 import { ILevels } from '../../types/level-types';
 import { useHistory } from 'react-router';

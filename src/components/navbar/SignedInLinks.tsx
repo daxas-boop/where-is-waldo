@@ -1,8 +1,9 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import { RootState, AuthState } from '../../types/state-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/actions/loginActions';
 
 const useStyles = makeStyles({
@@ -21,9 +22,12 @@ const SignedInLinks = () => {
     dispatch(logout());
   };
 
+  const authState: AuthState = useSelector((state: RootState) => state.auth);
+  const initialName = authState.user!.username[0].toUpperCase();
+
   return (
     <div className={classes.root}>
-      <Avatar>H</Avatar>
+      <Avatar>{initialName}</Avatar>
       <Button onClick={handleClick}>Logout</Button>
     </div>
   );

@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { keyframes } from '@emotion/core';
 import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import Container from '@material-ui/core/Container';
 import {
   isCharacterFound,
   saveTimeInLeaderboard,
@@ -13,33 +14,40 @@ import {
   endTimer,
   getTimeDifferential,
 } from './helpers/time-helpers';
+import { makeStyles } from '@material-ui/core/styles';
 
-const Container = styled.section`
+const useStyles = makeStyles({
+  title: {
+    color: 'white',
+    margin: '10px',
+  },
+  image: {
+    width: '1280px',
+    height: '720px',
+  },
+  listButton: {
+    pointerEvents: 'auto',
+    width: '150px',
+  },
+});
+
+const ImageContainer = styled.div`
   width: 1280px;
   position: relative;
-  margin: 60px auto;
   overflow-y: hidden;
   overflow-x: auto;
   max-width: 95%;
+  padding: 0;
+  margin: 22px auto;
 `;
 
-const Image = styled.img`
-  width: 1280px;
-  height: 720px;
-`;
-
-const SelectorBox = styled.div`
+const Circle = styled.div`
   width: 50px;
   height: 50px;
   border: 2px dashed black;
   border-radius: 50%;
   position: absolute;
   pointer-events: none;
-`;
-
-const StyledButton = styled(Button)`
-  margin-left: 60px;
-  pointer-events: auto;
 `;
 
 const spin = keyframes`
@@ -51,7 +59,7 @@ type CoordsProps = {
   coords: Array<number>;
 };
 
-const LoadingSelector = styled.div<CoordsProps>`
+const LoadingCircle = styled.div<CoordsProps>`
   position: absolute;
   border: 10px solid #f3f3f3;
   border-top: 10px solid #3498db;
@@ -82,7 +90,7 @@ const FoundCircle = styled.div<CoordsProps>`
   border: 3px solid darkgreen;
 `;
 
-const CenterButtons = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   text-decoration: none;
@@ -98,6 +106,14 @@ const StyledLink = styled(Link)`
   margin-right: 20px;
 `;
 
+const ButtonList = styled.div<CoordsProps>`
+  display: flex;
+  flex-direction: column;
+  margin-left: ${(props) => (props.coords[0] < 640 ? '60px' : '-160px')};
+  margin-top: ${(props) =>
+    props.coords[1] > 680 ? '-40px' : props.coords[1] < 20 ? '20px' : '0px'};
+`;
+
 const Game = (props: any) => {
   const { level } = props;
   const [selectorBoxCoords, setSelectorBoxCoords] = useState<Array<number>>([]);
@@ -108,6 +124,7 @@ const Game = (props: any) => {
   const [charactersNotFound, setCharactersNotFound] = useState<Array<string>>(
     level.characters
   );
+  const classes = useStyles(props);
 
   useEffect(() => {
     if (!isLevelOver) {
@@ -155,33 +172,39 @@ const Game = (props: any) => {
   if (isLevelOver)
     return (
       <FinishedLevelContainer>
-        <Typography gutterBottom variant="h1" align="center">
+        <Typography
+          className={classes.title}
+          gutterBottom
+          variant="h1"
+          align="center"
+        >
           {`You beat ${level.name}`}
         </Typography>
         <Typography gutterBottom color="primary" variant="h3" align="center">
           Your time was {getTimeDifferential()}
         </Typography>
-        <CenterButtons>
+        <ButtonContainer>
           <StyledLink to="/levels">
             <Button variant="contained">Select a new Level</Button>
           </StyledLink>
           <Button onClick={() => restartLevel()} variant="contained">
             Play again?
           </Button>
-        </CenterButtons>
+        </ButtonContainer>
       </FinishedLevelContainer>
     );
 
   return (
-    <>
-      <Typography variant="h3" align="center">
+    <Container>
+      <Typography className={classes.title} variant="h2" align="center">
         {level.name}
       </Typography>
-      <Container>
-        <Image
+      <ImageContainer>
+        <img
+          className={classes.image}
           src={level.image}
           onClick={(e) => handleImageClick(e)}
-          alt={`Image of ${level.name}`}
+          alt={`${level.name}`}
         />
 
         {charactersFound.map(
@@ -195,24 +218,27 @@ const Game = (props: any) => {
 
         {showSelectorBox && (
           <Wrapper coords={selectorBoxCoords}>
-            <SelectorBox />
-            {charactersNotFound.map((character: string) => (
-              <StyledButton
-                key={character}
-                variant="contained"
-                onClick={() =>
-                  handleCharacterClick(character, selectorBoxCoords)
-                }
-              >
-                {character}
-              </StyledButton>
-            ))}
+            <Circle />
+            <ButtonList coords={selectorBoxCoords}>
+              {charactersNotFound.map((character: string) => (
+                <Button
+                  className={classes.listButton}
+                  key={character}
+                  variant="contained"
+                  onClick={() =>
+                    handleCharacterClick(character, selectorBoxCoords)
+                  }
+                >
+                  {character}
+                </Button>
+              ))}
+            </ButtonList>
           </Wrapper>
         )}
 
-        {loading && <LoadingSelector coords={selectorBoxCoords} />}
-      </Container>
-    </>
+        {loading && <LoadingCircle coords={selectorBoxCoords} />}
+      </ImageContainer>
+    </Container>
   );
 };
 
