@@ -5,7 +5,7 @@ import Levels from './components/levels/Levels';
 import Home from './components/home/Home';
 import SignIn from './components/navbar/SignIn';
 import SignUp from './components/navbar/SignUp';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from './config/fbConfig';
 import { useDispatch } from 'react-redux';
 import Loading from './components/loading/Loading';
@@ -39,7 +39,7 @@ function App() {
   if (loading) return <Loading />;
 
   return (
-    <Router>
+    <Router basename="/">
       <Header></Header>
       <Switch>
         <Route path="/" exact component={Home}></Route>
