@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/where-is-waldo/static/css/main.35dd0b81.chunk.css",
+    "main.js": "/where-is-waldo/static/js/main.e6eccaa0.chunk.js",
+    "main.js.map": "/where-is-waldo/static/js/main.e6eccaa0.chunk.js.map",
+    "runtime-main.js": "/where-is-waldo/static/js/runtime-main.1aa43f1a.js",
+    "runtime-main.js.map": "/where-is-waldo/static/js/runtime-main.1aa43f1a.js.map",
+    "static/js/2.b04820ed.chunk.js": "/where-is-waldo/static/js/2.b04820ed.chunk.js",
+    "static/js/2.b04820ed.chunk.js.map": "/where-is-waldo/static/js/2.b04820ed.chunk.js.map",
+    "index.html": "/where-is-waldo/index.html",
+    "static/css/main.35dd0b81.chunk.css.map": "/where-is-waldo/static/css/main.35dd0b81.chunk.css.map",
+    "static/js/2.b04820ed.chunk.js.LICENSE.txt": "/where-is-waldo/static/js/2.b04820ed.chunk.js.LICENSE.txt",
+    "static/media/level_1.8d142447.png": "/where-is-waldo/static/media/level_1.8d142447.png",
+    "static/media/level_2.39e6469c.png": "/where-is-waldo/static/media/level_2.39e6469c.png",
+    "static/media/level_3.df92acac.png": "/where-is-waldo/static/media/level_3.df92acac.png",
+    "static/media/level_4.cbda96b1.png": "/where-is-waldo/static/media/level_4.cbda96b1.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1aa43f1a.js",
+    "static/js/2.b04820ed.chunk.js",
+    "static/css/main.35dd0b81.chunk.css",
+    "static/js/main.e6eccaa0.chunk.js"
+  ]
+}
