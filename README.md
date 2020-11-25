@@ -4,6 +4,9 @@
 This project was created as part of the curriculum in Javascript Fullstack on The Odin Project.</br>
 This was my first project using Typescript, firebase and redux/redux-thunk. It was a really fun project to get to know how a Backend-as-a-Service(BaaS) works, in this case firebase. I had so much fun that ended up adding user authentication even if it was not needed for this project. Also working with redux to manage a global state(the user) was incredible fun and simple.
 
+## Live Demo : 
+[![Demo of the page](https://i.ibb.co/rxHp4NP/screen.png)](https://daxas-boop.github.io/where-is-waldo/#/)
+
 ## Running the project locally
 1. Clone this project locally.
 2. Run `npm install`.</br>
