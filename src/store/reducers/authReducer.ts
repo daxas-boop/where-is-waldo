@@ -5,7 +5,7 @@ let initState: AuthState = {
   authError: null,
 };
 
-const rootReducer = (
+const authReducer = (
   state = initState,
   action: { type: string; payload?: any }
 ) => {
@@ -25,7 +25,7 @@ const rootReducer = (
 
     case 'SIGNUP_ERROR':
       console.log('signup error');
-      console.error(action.payload.message);
+      console.error(action.payload!.message);
       return { ...state, authError: action.payload };
 
     case 'LOGOUT_SUCCESS':
@@ -50,4 +50,4 @@ const rootReducer = (
   }
 };
 
-export default rootReducer;
+export default authReducer;

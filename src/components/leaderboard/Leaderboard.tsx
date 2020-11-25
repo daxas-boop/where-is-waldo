@@ -1,25 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../types/state-types';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import firebase from '../../config/fbConfig';
 import 'firebase/firestore';
-import { Container, ListItemText } from '@material-ui/core';
-import Divider from '@material-ui/core/Divider/Divider';
+import {
+  Container,
+  CircularProgress,
+  Paper,
+  TableRow,
+  TableHead,
+  TableContainer,
+  TableCell,
+  TableBody,
+  Table,
+  Typography,
+  Button,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: '1fr 3fr',
+    // eslint-disable-next-line no-useless-computed-key
+    ['@media (max-width:468px)']: {
+      gridTemplateColumns: '1fr',
+      gridTemplateRows: '1fr 4fr',
+    },
   },
   text: {
     marginTop: '20px',
     color: 'white',
   },
-  leaderboardItem: {
-    textAlign: 'center',
+  tableContainer: {
+    width: '70%',
+    margin: '0px auto',
+    backgroundColor: '#424242',
+    color: '#424242',
+    fontSize: '20px',
+    '@media (max-width:468px)': {
+      width: '90%',
+    },
+  },
+  table: {
+    width: '100%',
+    fontSize: '20px',
+    backgroundColor: '#424242',
+  },
+  hideLastBorder: {
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  },
+  button: {
+    width: '100%',
   },
 });
 
@@ -28,6 +62,7 @@ const Leaderboard = () => {
   const authState = useSelector((state: RootState) => state.auth);
   const [leaderboards, setLeaderboards] = useState<any>();
   const [leaderboardSelected, setLeaderboardSelected] = useState<any>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (authState.user) {
@@ -40,7 +75,12 @@ const Leaderboard = () => {
             data: lead.data(),
           };
         });
+        const myComparator = (a: any, b: any) => a.time.localeCompare(b.time);
+        leaderboards.map((leaderboard: any) =>
+          leaderboard.data.top_10.sort(myComparator)
+        );
         setLeaderboards(leaderboards);
+        setLoading(false);
       };
       fetchLeaderboards();
     }
@@ -56,50 +96,66 @@ const Leaderboard = () => {
   return (
     <div className={classes.root}>
       <Container>
-        {leaderboards &&
-          leaderboards.map((leaderboard: any) => (
-            <List
-              key={leaderboard.id}
-              component="nav"
-              aria-label="secondary mailbox folders"
-            >
-              <ListItem
-                button
+        <div>
+          <Typography className={classes.text} variant="h3" align="center">
+            Levels
+          </Typography>
+          {loading && (
+            <div style={{ display: 'flex' }}>
+              <CircularProgress style={{ margin: '0 auto' }} />
+            </div>
+          )}
+          {leaderboards &&
+            leaderboards.map((leaderboard: any) => (
+              <Button
+                color="primary"
+                variant="outlined"
+                key={leaderboard.id}
+                className={classes.button}
                 onClick={() => {
                   setLeaderboardSelected(leaderboard);
                 }}
               >
-                <ListItemText primary={leaderboard.id} />
-              </ListItem>
-            </List>
-          ))}
+                {leaderboard.id}
+              </Button>
+            ))}
+        </div>
       </Container>
+
       <Container>
         <Typography className={classes.text} variant="h3" align="center">
           Top 10
         </Typography>
+
         {leaderboardSelected ? (
-          <List aria-label="leaderboard times">
-            {leaderboardSelected.data.top_10.map((score: any) => (
-              <React.Fragment key={score.timeStamp}>
-                <ListItem>
-                  <ListItemText
-                    className={classes.leaderboardItem}
-                    primary={score.time}
-                    secondary={score.userName}
-                  />
-                </ListItem>
-                <Divider></Divider>
-              </React.Fragment>
-            ))}
-          </List>
+          <TableContainer className={classes.tableContainer} component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">User</TableCell>
+                  <TableCell align="center">Time</TableCell>
+                  <TableCell align="center">Position</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {leaderboardSelected.data.top_10.map(
+                  (row: any, index: number) => (
+                    <TableRow key={row.id} className={classes.hideLastBorder}>
+                      <TableCell align="center">{row.userName}</TableCell>
+                      <TableCell align="center">{row.time}</TableCell>
+                      <TableCell component="th" align="center" scope="row">
+                        {index + 1}
+                      </TableCell>
+                    </TableRow>
+                  )
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
         ) : (
-          <ListItem>
-            <ListItemText
-              className={classes.leaderboardItem}
-              primary="Select a level"
-            />
-          </ListItem>
+          <Typography className={classes.text} variant="h6" align="center">
+            Please select a level
+          </Typography>
         )}
       </Container>
     </div>

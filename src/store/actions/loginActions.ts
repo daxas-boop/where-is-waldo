@@ -1,9 +1,10 @@
 import firebase from '../../config/fbConfig';
 import 'firebase/firestore';
+import { Dispatch } from 'redux';
 const db = firebase.firestore();
 
 export const signIn = (email: string, password: string) => {
-  return async (dispatch: any) => {
+  return async (dispatch: Dispatch) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
       dispatch({ type: 'LOGIN_SUCCESS' });
@@ -14,7 +15,7 @@ export const signIn = (email: string, password: string) => {
 };
 
 export const signUp = (email: string, password: string, username: string) => {
-  return async (dispatch: any) => {
+  return async (dispatch: Dispatch) => {
     try {
       const querySnapshot = await db.collection('usernames').get();
       querySnapshot.forEach((doc) => {
@@ -37,7 +38,7 @@ export const signUp = (email: string, password: string, username: string) => {
 };
 
 export const logout = () => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch) => {
     firebase
       .auth()
       .signOut()

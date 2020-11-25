@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
-import Button from '@material-ui/core/Button';
-import { keyframes } from '@emotion/core';
-import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import Container from '@material-ui/core/Container';
 import {
   isCharacterFound,
   saveTimeInLeaderboard,
@@ -15,6 +10,9 @@ import {
   getTimeDifferential,
 } from './helpers/time-helpers';
 import { makeStyles } from '@material-ui/core/styles';
+import { Box, Typography, Button } from '@material-ui/core';
+import styled from '@emotion/styled';
+import { keyframes } from '@emotion/core';
 
 const useStyles = makeStyles({
   title: {
@@ -28,6 +26,14 @@ const useStyles = makeStyles({
   listButton: {
     pointerEvents: 'auto',
     width: '150px',
+  },
+  box: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  textItems: {
+    margin: '0px 7px',
+    color: 'white',
   },
 });
 
@@ -87,7 +93,7 @@ const FoundCircle = styled.div<CoordsProps>`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 3px solid darkgreen;
+  border: 5px solid black;
 `;
 
 const ButtonContainer = styled.div`
@@ -111,7 +117,7 @@ const ButtonList = styled.div<CoordsProps>`
   flex-direction: column;
   margin-left: ${(props) => (props.coords[0] < 640 ? '60px' : '-160px')};
   margin-top: ${(props) =>
-    props.coords[1] > 680 ? '-40px' : props.coords[1] < 20 ? '20px' : '0px'};
+    props.coords[1] > 620 ? '-100px' : props.coords[1] < 20 ? '20px' : '0px'};
 `;
 
 const Game = (props: any) => {
@@ -195,10 +201,20 @@ const Game = (props: any) => {
     );
 
   return (
-    <Container>
+    <>
       <Typography className={classes.title} variant="h2" align="center">
         {level.name}
       </Typography>
+      <Typography className={classes.title} variant="h5" align="center">
+        Find the following characters in the shortest time possible:
+      </Typography>
+      <Box className={classes.box}>
+        {charactersNotFound.map((character) => (
+          <Typography className={classes.textItems} variant="h6" align="center">
+            {character[0].toUpperCase() + character.slice(1)}
+          </Typography>
+        ))}
+      </Box>
       <ImageContainer>
         <img
           className={classes.image}
@@ -238,7 +254,7 @@ const Game = (props: any) => {
 
         {loading && <LoadingCircle coords={selectorBoxCoords} />}
       </ImageContainer>
-    </Container>
+    </>
   );
 };
 

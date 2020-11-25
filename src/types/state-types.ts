@@ -1,3 +1,5 @@
+import { ILevels } from './level-types';
+
 export interface AuthState {
   user: {
     username: string;
@@ -10,7 +12,7 @@ export interface AuthState {
 }
 
 export interface LevelState {
-  level: any;
+  level: null | ILevels;
 }
 
 export interface RootState {

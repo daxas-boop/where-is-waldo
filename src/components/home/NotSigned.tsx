@@ -1,9 +1,8 @@
 import React from 'react';
 import SignUp from '../navbar/SignUp';
 import { Link } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
+import { Typography, Container } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -1,19 +1,23 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
 import { ILevels } from '../../types/level-types';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+  Typography,
+  CardMedia,
+  CardContent,
+  CardActionArea,
+  Card,
+} from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 400,
+    width: 450,
+    // eslint-disable-next-line no-useless-computed-key
+    ['@media (max-width:468px)']: { maxWidth: 300 },
   },
   media: {
     height: 300,
-    width: 400,
+    width: '100%',
   },
 });
 

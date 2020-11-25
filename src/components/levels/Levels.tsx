@@ -1,15 +1,13 @@
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import Cards from './Cards';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../types/state-types';
 import { levels } from '../../levels/levels';
 import { selectLevel } from '../../store/actions/levelActions';
 import { ILevels } from '../../types/level-types';
 import { useHistory } from 'react-router';
-import Cards from './Cards';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { Container, Typography, Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,6 +18,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: '20px',
       marginBottom: '20px',
       color: 'white',
+    },
+    grid: {
+      justifyContent: 'center',
     },
   })
 );
@@ -47,7 +48,7 @@ const Levels = () => {
       <Typography className={classes.text} variant="h2" align="center">
         Select a level
       </Typography>
-      <Grid container spacing={2}>
+      <Grid className={classes.grid} container spacing={2}>
         {Object.keys(levels).map((key) => {
           return (
             <Grid key={key} onClick={() => handleLevelClick(levels[key])} item>

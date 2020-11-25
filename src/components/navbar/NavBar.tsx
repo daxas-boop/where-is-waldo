@@ -1,21 +1,20 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import HomeIcon from '@material-ui/icons/Home';
 import SignedInLinks from './SignedInLinks';
 import SignedOutLinks from './SignedOutLinks';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../types/state-types';
 import { useSelector } from 'react-redux';
+import { Button, Typography, Toolbar, AppBar } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import HomeIcon from '@material-ui/icons/Home';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
       height: '10vh',
+      // eslint-disable-next-line no-useless-computed-key
+      ['@media (max-width:468px)']: { padding: 0 },
     },
     menuButton: {
       marginRight: theme.spacing(2),
