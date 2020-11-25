@@ -153,6 +153,7 @@ const Game = (props: any) => {
 
   const handleImageClick = (e: React.MouseEvent<HTMLElement>) => {
     const coords = [e.nativeEvent.offsetX, e.nativeEvent.offsetY];
+    console.log(coords);
     setSelectorBoxCoords(coords);
     setShowSelectorBox(true);
   };
@@ -210,7 +211,12 @@ const Game = (props: any) => {
       </Typography>
       <Box className={classes.box}>
         {charactersNotFound.map((character) => (
-          <Typography className={classes.textItems} variant="h6" align="center">
+          <Typography
+            key={character}
+            className={classes.textItems}
+            variant="h6"
+            align="center"
+          >
             {character[0].toUpperCase() + character.slice(1)}
           </Typography>
         ))}
