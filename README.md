@@ -1,8 +1,8 @@
-# Weather App
+# Where's Waldo
 
 ## Overview 
 This project was created as part of the curriculum in Javascript Fullstack on The Odin Project.</br>
-Este fue mi primer projecto usando Typescript, firebase y redux. 
+This was my first project using Typescript, firebase and redux/redux-thunk. It was a really fun project to get to know how a Backend-as-a-Service(BaaS) works, in this case firebase. I had so much fun that ended up adding user authentication even if it was not needed for this project. Also working with redux to manage a global state(the user) was incredible fun and simple.
 
 ## Running the project locally
 1. Clone this project locally.
@@ -22,11 +22,11 @@ The page will reload if you make edits.
 - [@material-ui/styled](https://material-ui.com/es/styles/basics/)
 
 ## Dev dependecies 
-- [react-app-rewired]
-- [customize-cra]
-- [babel-plugin-import]
-- [@material-ui/codemod]
-- [eslint-plugin-prettier]
+- [react-app-rewired](https://github.com/timarney/react-app-rewired)
+- [customize-cra](https://github.com/arackaf/customize-cra)
+- [babel-plugin-import](https://www.npmjs.com/package/babel-plugin-import)
+- [@material-ui/codemod](https://www.npmjs.com/package/@material-ui/codemod)
+- [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier)
 
 ## Available Scripts
 

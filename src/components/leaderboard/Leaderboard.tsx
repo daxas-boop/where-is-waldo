@@ -76,9 +76,9 @@ const Leaderboard = () => {
           };
         });
         const myComparator = (a: any, b: any) => a.time.localeCompare(b.time);
-        leaderboards.map((leaderboard: any) =>
-          leaderboard.data.top_10.sort(myComparator)
-        );
+        leaderboards.forEach((leaderboard: any) => {
+          leaderboard.data.top_10.sort(myComparator);
+        });
         setLeaderboards(leaderboards);
         setLoading(false);
       };
@@ -140,7 +140,7 @@ const Leaderboard = () => {
               <TableBody>
                 {leaderboardSelected.data.top_10.map(
                   (row: any, index: number) => (
-                    <TableRow key={row.id} className={classes.hideLastBorder}>
+                    <TableRow key={index} className={classes.hideLastBorder}>
                       <TableCell align="center">{row.userName}</TableCell>
                       <TableCell align="center">{row.time}</TableCell>
                       <TableCell component="th" align="center" scope="row">
